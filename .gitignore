@@ -3,3 +3,17 @@
 ################################################################################
 
 /src/.vs
+/src/ImageFilter.Web/App_Data/cache/7/5/e/3/7/e
+/src/ImageFilter.Web/App_Data/Logs
+/src/ImageFilter.Web/App_Data/Models
+/src/ImageFilter.Web/App_Data/NuGetBackup/20190114-232910
+/src/ImageFilter.Web/App_Data/TEMP
+/src/ImageFilter.Web/App_Data/NuCache.Media.tlog
+/src/ImageFilter.Web/App_Data/NuCache.Media.db
+/src/ImageFilter.Web/App_Data/NuCache.Content.tlog
+/src/ImageFilter.Web/App_Data/NuCache.Content.db
+/src/ImageFilter.Web/App_Plugins/ModelsBuilder
+/src/ImageFilter.Web/bin
+/src/ImageFilter.Web/obj/Debug
+/src/ImageFilter.Web/Umbraco
+/src/packages
