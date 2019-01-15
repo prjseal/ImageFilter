@@ -7,7 +7,7 @@
 
 ## Dev instructions
 
-Edit the files in project ImageFilter not the ImageFilter.Web project.
+Edit the files in project ImageFilter <strong>not</strong> the ImageFilter.Web project.
 The files will copy over after you build the ImageFilter.Web project.
 
 ## To see your changes reflected in the backoffice
