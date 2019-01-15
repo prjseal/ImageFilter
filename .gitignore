@@ -17,3 +17,6 @@
 /src/ImageFilter.Web/obj/Debug
 /src/ImageFilter.Web/Umbraco
 /src/packages
+/src/ImageFilter/bin/Debug
+/src/ImageFilter/obj/Debug
+/src/ImageFilter.Web/App_Plugins/ImageFilter
