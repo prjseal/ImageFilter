@@ -1,2 +1,41 @@
-﻿body {
+﻿.image-filter__container {
+    width: 100%;
+    display: grid;
+    grid-template-areas: 'header header header' 'image image option';
+    grid-template-rows: 100px 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 15px;
+    padding: 10px;
+}
+
+    .image-filter__container img {
+        width: 100%;
+    }
+
+.image-filter__header {
+    grid-area: header;
+}
+
+.image-filter__image-store {
+    grid-area: image;
+    display: grid;
+    grid-template-areas: "original preview" "controls controls";
+}
+
+    .image-filter__image-store .image__original {
+        grid-area: original;
+        padding: 5px;
+    }
+
+    .image-filter__image-store .image__preview {
+        grid-area: preview;
+        padding: 5px;
+    }
+
+    .image-filter__image-store .filter-controls {
+        grid-area: controls;
+    }
+
+.image-filter__options {
+    grid-area: option;
 }

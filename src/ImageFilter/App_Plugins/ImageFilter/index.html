@@ -1,4 +1,31 @@
 ﻿<div class="umb-box" ng-controller="ImageFilter as vm">
-    <div id="image-filter"></div>
-    <img src="{{vm.mediaUrl}}" />
+    <div id="image-filter" class="image-filter__container">
+        <div class="image-filter__header">
+            <h2>Image Processor previewer</h2>
+            <div class="image-filter__intro">From here you can experiment with different Image Processor options to see what your image might look like.</div>
+        </div>
+        <div class="image-filter__image-store">
+            <div class="image__original">
+                <img src="{{vm.mediaUrl}}" />
+            </div>
+            <div class="image__preview">
+                <img src="{{vm.mediaUrl}}" />
+            </div>
+            <div class="filter-controls">
+                Here is where controls for the selected filter will appear.
+                <br />
+                {{model.selectedOption.Name}}
+                <br />
+                {{model.selectedOption.PathToView}}
+
+                <div ng-include="model.selectedOption.PathToView"></div>
+            </div>
+        </div>
+        <div class="image-filter__options">
+            Options will appear here
+            <div ng-repeat="option in availableImageProcessorOptions track by $index">
+                <label><input type="radio" name="selectedOption" ng-value="option" ng-model="model.selectedOption" /> <!--ng-change="vm.selectedProcessorChanged(option)"-->  {{option.Name}}</label>
+            </div>
+        </div>
+    </div>
 </div>

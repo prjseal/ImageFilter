@@ -11,7 +11,10 @@
       ]
     }
   ],
-  "javascript": [
-    "~/App_Plugins/ImageFilter/js/imagefilter.controller.js"
-  ]
+    "javascript": [
+        "~/App_Plugins/ImageFilter/js/imagefilter.controller.js"
+    ],
+    "css": [
+        "~/App_Plugins/ImageFilter/css/imagefilter.css"
+    ]
 }
