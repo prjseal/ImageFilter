@@ -20,3 +20,4 @@
 /src/ImageFilter/bin/Debug
 /src/ImageFilter/obj/Debug
 /src/ImageFilter.Web/App_Plugins/ImageFilter
+/src/ImageFilter.Web/App_Data/cache
