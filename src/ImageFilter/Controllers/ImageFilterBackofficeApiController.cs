@@ -33,7 +33,7 @@ namespace ImageFilter.Controllers
                 }
             }
 
-            return validProcessors;
+            return validProcessors.OrderBy(p=>p.Name).ToList();
         }
     }
 }

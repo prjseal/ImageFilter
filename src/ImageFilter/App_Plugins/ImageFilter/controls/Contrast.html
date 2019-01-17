@@ -1,3 +1,4 @@
 <div>
-    <input type="range" step="1" min="0" max="100" ng-value="model.Contrast" ng-model="model.Contrast" ng-change="vm.setQueryString()" class="slider" >
+    <p>Alter the {{model.selectedOption.Name}} - Current value: {{model.Brightness}}%</p>
+    <input type="range" step="1" min="-100" max="100" ng-value="model.Contrast" ng-model="model.Contrast" ng-change="vm.setQueryString()" class="slider">
 </div>

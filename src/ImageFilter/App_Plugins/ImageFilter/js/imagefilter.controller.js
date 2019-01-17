@@ -14,13 +14,13 @@
         };
     }
 
-    function ImageFilter ($scope, $http, editorState) {
+    function ImageFilter($scope, $http, editorState) {
         var vm = this;
         var apiUrl;
         var mediaUrl;
 
         function init() {
-            mediaUrl = "";            
+            mediaUrl = "";
 
             apiUrl = Umbraco.Sys.ServerVariables["PJSealImageFilter"]["ImageFilterApiUrl"];
 
@@ -46,7 +46,8 @@
             vm.angular = angular;
         }
 
-        function selectedProcessorChanged() {            
+        function selectedProcessorChanged() {
+            if (angular.equals($scope.model.selectedOption, {}) || $scope.model.selectedOption.DefaultValues === undefined) return;
             vm.previewMediaUrl = vm.mediaUrl + "?" + $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.selectedOption.DefaultValues);
             switch ($scope.model.selectedOption.Name) {
                 case "Brightness":
@@ -84,7 +85,6 @@
                 if (callNow) func.apply(context, args);
             };
         };
-        
 
         init();
 
