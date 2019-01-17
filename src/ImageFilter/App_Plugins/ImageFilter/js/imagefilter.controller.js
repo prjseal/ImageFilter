@@ -1,6 +1,19 @@
 ﻿(function () {
     'use strict';
 
+    // First, checks if it isn't implemented yet.
+    if (!String.prototype.format) {
+        String.prototype.format = function () {
+            var args = arguments;
+            return this.replace(/{(\d+)}/g, function (match, number) {
+                return typeof args[number] !== 'undefined'
+                    ? args[number]
+                    : match
+                    ;
+            });
+        };
+    }
+
     function ImageFilter ($scope, $http, editorState) {
         var vm = this;
         var apiUrl;
@@ -25,16 +38,37 @@
             if (editorState.current.contentType.alias === "Image") {
                 mediaUrl = editorState.current.mediaLink;
                 vm.mediaUrl = mediaUrl;
+                vm.previewMediaUrl = mediaUrl;
             }
 
             vm.selectedProcessorChanged = selectedProcessorChanged;
+            vm.setQueryString = setQueryString;
+            vm.angular = angular;
         }
 
-        function selectedProcessorChanged(option) {
-            //$scope.model.selectedOption = option;
+        function selectedProcessorChanged() {            
+            vm.previewMediaUrl = vm.mediaUrl + "?" + $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.selectedOption.DefaultValues);
+            switch ($scope.model.selectedOption.Name) {
+                case "Brightness":
+                    $scope.model.Brightness = $scope.model.selectedOption.DefaultValues[0];
+                    break;
+                default:
+                    break;
+            }
         }
 
-        
+        function setQueryString() {
+            var qs;
+            switch ($scope.model.selectedOption.Name) {
+                case "Brightness":
+                    qs = $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.Brightness);
+                    break;
+                default:
+                    break;
+            }
+
+            vm.previewMediaUrl = vm.mediaUrl + "?" + qs;
+        }
 
         
 

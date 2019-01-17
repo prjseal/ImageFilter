@@ -232,7 +232,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="App_Plugins\ImageFilter\package.manifest" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Plugins\ImageFilter\controls\Alpha.html" />
+    <Content Include="App_Plugins\ImageFilter\controls\Brightness.html" />
+    <Content Include="App_Plugins\ImageFilter\controls\Contrast.html" />
+    <Content Include="App_Plugins\ImageFilter\css\imagefilter.css" />
+    <Content Include="App_Plugins\ImageFilter\index.html" />
+    <Content Include="App_Plugins\ImageFilter\js\imagefilter.controller.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Umbraco.SqlServerCE.4.0.0.1\build\Umbraco.SqlServerCE.targets" Condition="Exists('..\packages\Umbraco.SqlServerCE.4.0.0.1\build\Umbraco.SqlServerCE.targets')" />
