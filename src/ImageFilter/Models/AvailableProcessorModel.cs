@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace ImageFilter.Models
 {
     public class AvailableProcessorModel
@@ -30,18 +32,18 @@ namespace ImageFilter.Models
             }
         }
 
-        public string[] DefaultValues
+        public List<object> DefaultValues
         {
             get
             {
                 switch (Name.ToLower())
                 {
                     case "alpha":
-                        return new[] { "50" };
+                        return new List<object> { 50 };
                     case "brightness":
-                        return new[] { "0" };
+                        return new List<object> { 0 };
                     case "contrast":
-                        return new[] { "25" };
+                        return new List<object> { 0 };
                     default:
                         return null;
                 }
