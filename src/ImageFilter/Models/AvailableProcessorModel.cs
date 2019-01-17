@@ -39,7 +39,7 @@ namespace ImageFilter.Models
                     case "alpha":
                         return new[] { "50" };
                     case "brightness":
-                        return new[] { "25" };
+                        return new[] { "0" };
                     case "contrast":
                         return new[] { "25" };
                     default:
