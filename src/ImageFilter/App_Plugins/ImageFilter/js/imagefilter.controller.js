@@ -43,7 +43,7 @@
 
             vm.selectedProcessorChanged = selectedProcessorChanged;
             vm.setQueryString = setQueryString;
-            vm.debounce = 75;
+            vm.debounce = 0;
             vm.angular = angular;
         }
 
@@ -56,6 +56,10 @@
                     break;
                 case "Contrast":
                     $scope.model.Brightness = $scope.model.selectedOption.DefaultValues[0];
+                    break;
+                case "Flip":
+                    $scope.model.Options = ["none", "horizontal", "vertical", "both"];
+                    $scope.model.Flip = $scope.model.selectedOption.DefaultValues[0];
                     break;
                 default:
                     break;
@@ -70,6 +74,9 @@
                     break;
                 case "Contrast":
                     qs = $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.Contrast);
+                    break;
+                case "Flip":
+                    qs = $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.Flip);
                     break;
                 default:
                     return;

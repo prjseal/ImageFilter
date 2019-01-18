@@ -26,6 +26,8 @@ namespace ImageFilter.Models
                         return "brightness={0}";
                     case "contrast":
                         return "contrast={0}";
+                    case "flip":
+                        return "flip={0}";
                     default:
                         return string.Empty;
                 }
@@ -44,6 +46,8 @@ namespace ImageFilter.Models
                         return new List<object> { 0 };
                     case "contrast":
                         return new List<object> { 0 };
+                    case "flip":
+                        return new List<object> { "horizontal" };
                     default:
                         return null;
                 }

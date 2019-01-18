@@ -238,6 +238,7 @@
   <ItemGroup>
     <Content Include="App_Plugins\ImageFilter\controls\Brightness.html" />
     <Content Include="App_Plugins\ImageFilter\controls\Contrast.html" />
+    <Content Include="App_Plugins\ImageFilter\controls\Flip.html" />
     <Content Include="App_Plugins\ImageFilter\css\imagefilter.css" />
     <Content Include="App_Plugins\ImageFilter\index.html" />
     <Content Include="App_Plugins\ImageFilter\js\imagefilter.controller.js" />
