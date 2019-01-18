@@ -366,7 +366,9 @@
     <Content Include="App_Plugins\ImageFilter\index.html" />
     <Content Include="App_Plugins\ImageFilter\js\imagefilter.controller.js" />
     <Content Include="config\imageprocessor\security.config" />
-    <Content Include="config\imageprocessor\processing.config" />
+    <Content Include="config\imageprocessor\processing.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="config\imageprocessor\cache.config" />
     <Content Include="App_Plugins\ModelsBuilder\package.manifest" />
     <Content Include="Media\Web.config" />
