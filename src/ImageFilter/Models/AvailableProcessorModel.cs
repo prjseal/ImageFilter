@@ -26,6 +26,8 @@ namespace ImageFilter.Models
                         return "brightness={0}";
                     case "contrast":
                         return "contrast={0}";
+                    case "filter":
+                        return "filter={0}";
                     case "flip":
                         return "flip={0}";
                     case "rotate":
@@ -48,6 +50,8 @@ namespace ImageFilter.Models
                         return new List<object> { 0 };
                     case "contrast":
                         return new List<object> { 0 };
+                    case "filter":
+                        return new List<object> { "blackwhite" };
                     case "flip":
                         return new List<object> { "horizontal" };
                     case "rotate":

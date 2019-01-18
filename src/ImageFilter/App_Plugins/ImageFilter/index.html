@@ -27,7 +27,7 @@
         <div class="image-filter__options">
             <p>Enabled options</p>
             <div ng-repeat="option in availableImageProcessorOptions track by $index">
-                <label><input type="radio" name="selectedOption" ng-value="option" ng-model="model.selectedOption" ng-change="vm.selectedProcessorChanged()" />  {{option.Name}}</label>
+                <label><input type="radio" name="selectedOption" ng-value="option" ng-model="model.selectedOption" ng-change="vm.selectedProcessorChanged()" no-dirty-check />  {{option.Name}}</label>
             </div>
         </div>
     </div>

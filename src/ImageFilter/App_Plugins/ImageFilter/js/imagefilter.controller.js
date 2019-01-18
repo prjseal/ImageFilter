@@ -57,6 +57,10 @@
                 case "Contrast":
                     $scope.model.Brightness = $scope.model.selectedOption.DefaultValues[0];
                     break;
+                case "Filter":
+                    $scope.model.Options = ["none", "blackwhite", "comic", "gotham", "greyscale", "hisatch", "invert", "lomograph", "losatch", "polaroid", "sepia" ];
+                    $scope.model.Filter = $scope.model.selectedOption.DefaultValues[0];
+                    break;
                 case "Flip":
                     $scope.model.Options = ["none", "horizontal", "vertical", "both"];
                     $scope.model.Flip = $scope.model.selectedOption.DefaultValues[0];
@@ -78,6 +82,9 @@
                     break;
                 case "Contrast":
                     qs = $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.Contrast);
+                    break;
+                case "Filter":
+                    qs = $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.Filter);
                     break;
                 case "Flip":
                     qs = $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.Flip);
