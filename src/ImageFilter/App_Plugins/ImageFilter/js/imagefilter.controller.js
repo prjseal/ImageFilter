@@ -27,7 +27,8 @@
             $scope.availableImageProcessorOptions = [];
 
             $scope.model = {
-                selectedOption: {}
+                selectedOption: {},
+                queryString: ""
             };
 
             $http.get(apiUrl + 'GetImageProccessorOptions').then(function (response) {
@@ -46,11 +47,15 @@
             vm.setQueryString = setQueryString;
             vm.debounce = 0;
             vm.angular = angular;
+            vm.showQueryString = false;
+            
         }
 
         function selectedProcessorChanged() {
             if (angular.equals($scope.model.selectedOption, {}) || $scope.model.selectedOption.DefaultValues === undefined) return;
             vm.previewMediaUrl = vm.mediaUrl + "?" + $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.selectedOption.DefaultValues);
+            $scope.model.queryString = "?" + $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.selectedOption.DefaultValues);
+
             switch ($scope.model.selectedOption.Name) {
                 case "Brightness":
                     $scope.model.Brightness = $scope.model.selectedOption.DefaultValues[0];
@@ -98,6 +103,7 @@
             }
 
             vm.previewMediaUrl = vm.mediaUrl + "?" + qs;
+            $scope.model.queryString = "?" + qs;
         }
 
         init();

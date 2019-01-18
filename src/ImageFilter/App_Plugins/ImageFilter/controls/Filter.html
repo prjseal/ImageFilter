@@ -1,7 +1,9 @@
-﻿<div>
+﻿<div class="control-text">
     <p>Alter the {{model.selectedOption.Name}} - Current value: {{model.Filter}}</p>
-    <div ng-repeat="filterOption in model.Options">
-        <label>
+</div>
+<div class="control-inputs">    
+    <div  class="options_container">
+        <label ng-repeat="filterOption in model.Options">
         <input type="radio" ng-value="filterOption" ng-model="model.Filter" ng-change="vm.setQueryString()" name="filterOption" no-dirty-check><span>{{filterOption}}</span></label>
     </div>
 </div>
