@@ -2,7 +2,6 @@
     width: 100%;
     display: grid;
     grid-template-areas: 'header header header' 'image image option';
-    grid-template-rows: 100px 1fr;
     grid-column-gap: 10px;
     grid-template-columns: 2fr 2fr 1fr;
     grid-row-gap: 15px;
@@ -15,6 +14,7 @@
 
 .image-filter__header {
     grid-area: header;
+    padding: 5px;
 }
 
 .image-filter__image-store {
