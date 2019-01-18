@@ -236,7 +236,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Plugins\ImageFilter\controls\Alpha.html" />
     <Content Include="App_Plugins\ImageFilter\controls\Brightness.html" />
     <Content Include="App_Plugins\ImageFilter\controls\Contrast.html" />
     <Content Include="App_Plugins\ImageFilter\css\imagefilter.css" />
