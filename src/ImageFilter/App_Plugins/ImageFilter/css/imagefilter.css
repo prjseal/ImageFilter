@@ -37,7 +37,20 @@
 
     .image-filter__image-store .filter-controls {
         grid-area: controls;
+        display: grid;
+        grid-template-areas: "empty text" "empty inputs";
+        grid-template-columns: 1fr 1fr;
     }
+
+.control-text {
+    grid-area: text;
+    padding: 5px 10px;
+}
+
+.control-inputs {
+    grid-area: inputs;
+    padding: 5px 10px;
+}
 
 .image-filter__options {
     grid-area: option;
@@ -72,3 +85,12 @@
         background: #00aea2;
         cursor: pointer;
     }
+
+.optional_control {
+    height: 30px;
+}
+
+.options_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
