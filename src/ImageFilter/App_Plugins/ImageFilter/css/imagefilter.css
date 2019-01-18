@@ -97,9 +97,14 @@
 
 #image-filter input[type="radio"], #image-filter input[type=checkbox] {
     margin: 0;
-    height: 18px;
+    height: 12px;
+    width: 12px;
 }
 
 #image-filter input[type=checkbox] {
     margin: 4px;
+}
+
+#image-filter div.options_container input[type="radio"], #image-filter div.control-inputs input[type="radio"] {
+    margin-right: 4px;
 }
