@@ -1,5 +1,5 @@
 ﻿<div class="control-text">
-    <p>Alter the {{model.selectedOption.Name}} - Current value: {{model.Flip}}</p>
+    <p>{{model.selectedOption.Name | lowercase}} the image - Current value: {{model.Flip}}</p>
 </div>
 <div class="control-inputs">
     <div ng-repeat="flipOption in model.Options">

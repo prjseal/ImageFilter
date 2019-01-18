@@ -1,5 +1,5 @@
 ﻿<div class="control-text">
-    <p>Alter the {{model.selectedOption.Name}} - Current value: {{model.Rotate}}</p>
+    <p>{{model.selectedOption.Name | lowercase}} the image - Current value: {{model.Rotate}}</p>
 </div>
 <div class="control-inputs">
     <div ng-repeat="rotateOption in model.Options">
