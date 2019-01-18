@@ -1,4 +1,41 @@
 ﻿<div class="umb-box" ng-controller="ImageFilter as vm">
-    <div id="image-filter"></div>
-    <img src="{{vm.mediaUrl}}" />
+    <div class="umb-box-header">
+        <div class="umb-box-header-title">
+            Image Filter
+        </div>
+    </div>
+    <div id="image-filter" class="image-filter__container">
+        <div class="image-filter__header">
+            <div class="image-filter__intro">From here you can experiment with different Image Processor options to see what your image might look like.</div>
+        </div>
+        <div class="image-filter__image-store">
+            <div class="image__original">
+                <div class="optional_control">
+                    <label><input type="checkbox" value="true" ng-model="vm.showQueryString" />Show query string for preview image?</label>
+                </div>
+                <img src="{{vm.mediaUrl}}" />
+            </div>
+            <div class="image__preview">
+                <div class="optional_control">
+                    <span ng-if="vm.showQueryString">
+                        {{model.queryString}}
+                    </span>
+                </div>
+                <div ng-if="model.selectedOption !== undefined && !vm.angular.equals(model.selectedOption,{})">
+                    <a href="{{vm.previewMediaUrl}}" title="Click to download this image" download="{{vm.fileName}}"><img src="{{vm.previewMediaUrl}}" /></a>
+                </div>
+                <div ng-if="model.selectedOption === undefined || vm.angular.equals(model.selectedOption,{})">
+                    <p>Please select an option on the right to enable the preview image.</p>
+                </div>
+            </div>
+            <div class="filter-controls" ng-include="model.selectedOption.PathToView">
+            </div>
+        </div>
+        <div class="image-filter__options">
+            <p>Enabled options</p>
+            <div ng-repeat="option in availableImageProcessorOptions track by $index">
+                <label><input type="radio" name="selectedOption" ng-value="option" ng-model="model.selectedOption" ng-change="vm.selectedProcessorChanged()" no-dirty-check />  {{option.Name}}</label>
+            </div>
+        </div>
+    </div>
 </div>

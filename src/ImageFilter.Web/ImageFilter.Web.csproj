@@ -433,7 +433,9 @@
     <Content Include="default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Media\52aa9de134ab4c59a1983453874ddd7e\00000006000000000000000000000000\debby-hudson-544846-unsplash.jpg" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

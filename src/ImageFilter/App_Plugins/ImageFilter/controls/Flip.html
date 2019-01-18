@@ -1,0 +1,10 @@
+﻿<div class="control-text">
+    <p>Alter the {{model.selectedOption.Name}} - Current value: {{model.Flip}}</p>
+</div>
+<div class="control-inputs">
+    <div ng-repeat="flipOption in model.Options">
+        <label>
+            <input type="radio" ng-value="flipOption" ng-model="model.Flip" ng-change="vm.setQueryString()" name="flipOption" no-dirty-check><span>{{flipOption}}</span>
+        </label>
+    </div>
+</div>

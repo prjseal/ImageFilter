@@ -1,2 +1,96 @@
-﻿body {
+﻿.image-filter__container {
+    width: 100%;
+    display: grid;
+    grid-template-areas: 'header header header' 'image image option';
+    grid-column-gap: 10px;
+    grid-template-columns: 2fr 2fr 1fr;
+    grid-row-gap: 15px;
+    padding: 10px;
+}
+
+    .image-filter__container img {
+        width: 100%;
+    }
+
+.image-filter__header {
+    grid-area: header;
+    padding: 5px;
+}
+
+.image-filter__image-store {
+    grid-area: image;
+    display: grid;
+    grid-template-areas: "original preview" "controls controls";
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+}
+
+    .image-filter__image-store .image__original {
+        grid-area: original;
+        padding: 5px;
+    }
+
+    .image-filter__image-store .image__preview {
+        grid-area: preview;
+        padding: 5px;
+    }
+
+    .image-filter__image-store .filter-controls {
+        grid-area: controls;
+        display: grid;
+        grid-template-areas: "empty text" "empty inputs";
+        grid-template-columns: 1fr 1fr;
+    }
+
+.control-text {
+    grid-area: text;
+    padding: 5px 10px;
+}
+
+.control-inputs {
+    grid-area: inputs;
+    padding: 5px 10px;
+}
+
+.image-filter__options {
+    grid-area: option;
+}
+
+.image-filter__container .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: rgb(65, 54, 89);
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+}
+
+    .image-filter__container .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #00aea2;
+        cursor: pointer;
+    }
+
+    .image-filter__container .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #00aea2;
+        cursor: pointer;
+    }
+
+.optional_control {
+    height: 30px;
+}
+
+.options_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
