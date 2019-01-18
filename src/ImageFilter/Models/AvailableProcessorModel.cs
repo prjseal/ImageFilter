@@ -28,6 +28,8 @@ namespace ImageFilter.Models
                         return "contrast={0}";
                     case "flip":
                         return "flip={0}";
+                    case "rotate":
+                        return "rotate={0}";
                     default:
                         return string.Empty;
                 }
@@ -48,6 +50,8 @@ namespace ImageFilter.Models
                         return new List<object> { 0 };
                     case "flip":
                         return new List<object> { "horizontal" };
+                    case "rotate":
+                        return new List<object> { 90 };
                     default:
                         return null;
                 }

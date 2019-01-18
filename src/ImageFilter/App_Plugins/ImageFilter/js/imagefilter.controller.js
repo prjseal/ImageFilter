@@ -61,6 +61,10 @@
                     $scope.model.Options = ["none", "horizontal", "vertical", "both"];
                     $scope.model.Flip = $scope.model.selectedOption.DefaultValues[0];
                     break;
+                case "Rotate":
+                    $scope.model.Options = [0, 90, 180, 270];
+                    $scope.model.Rotate = $scope.model.selectedOption.DefaultValues[0];
+                    break;
                 default:
                     break;
             }
@@ -77,6 +81,9 @@
                     break;
                 case "Flip":
                     qs = $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.Flip);
+                    break;
+                case "Rotate":
+                    qs = $scope.model.selectedOption.QueryStringEntryTemplate.format($scope.model.Rotate);
                     break;
                 default:
                     return;

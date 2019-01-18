@@ -1,0 +1,7 @@
+﻿<div>
+    <p>Alter the {{model.selectedOption.Name}} - Current value: {{model.Rotate}}</p>
+    <div ng-repeat="rotateOption in model.Options">
+        <label>
+        <input type="radio" ng-value="rotateOption" ng-model="model.Rotate" ng-change="vm.setQueryString()" name="rotateOption"><span>{{rotateOption}}</span></label>
+    </div>
+</div>
