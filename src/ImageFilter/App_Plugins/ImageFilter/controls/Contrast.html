@@ -1,5 +1,5 @@
 <div class="control-text">
-    <p>Alter the {{model.selectedOption.Name}} - Current value: {{model.Contrast}}%</p>
+    <p>Alter the {{model.selectedOption.Name | lowercase}} - Current value: {{model.Contrast}}%</p>
 </div>
 <div class="control-inputs">
     <input type="range" step="1" min="-100" max="100" ng-value="model.Contrast" ng-model="model.Contrast" ng-change="vm.setQueryString()" ng-model-options="{ debounce: vm.debounce }" class="slider" no-dirty-check>

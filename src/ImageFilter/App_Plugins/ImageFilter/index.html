@@ -13,6 +13,7 @@
                 <div class="optional_control">
                     <label><input type="checkbox" value="true" ng-model="vm.showQueryString" no-dirty-check />Show query string for preview image?</label>
                 </div>
+                <h4>Original</h4>
                 <img src="{{vm.mediaUrl}}" />
             </div>
             <div class="image__preview">
@@ -21,6 +22,7 @@
                         {{model.queryString}}
                     </span>
                 </div>
+                    <h4>Preview</h4>
                 <div ng-if="model.selectedOption !== undefined && !vm.angular.equals(model.selectedOption,{})">
                     <a href="{{vm.previewMediaUrl}}" title="Click to download this image" download="{{vm.fileName}}"><img src="{{vm.previewMediaUrl}}" /></a>
                 </div>
@@ -32,7 +34,7 @@
             </div>
         </div>
         <div class="image-filter__options">
-            <p>Enabled options</p>
+            <h4>Enabled options</h4>
             <div ng-repeat="option in availableImageProcessorOptions track by $index">
                 <label><input type="radio" name="selectedOption" ng-value="option" ng-model="model.selectedOption" ng-change="vm.selectedProcessorChanged()" no-dirty-check />  {{option.Name}}</label>
             </div>

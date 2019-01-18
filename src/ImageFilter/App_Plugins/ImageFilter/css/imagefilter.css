@@ -94,3 +94,12 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
+
+#image-filter input[type="radio"], #image-filter input[type=checkbox] {
+    margin: 0;
+    height: 18px;
+}
+
+#image-filter input[type=checkbox] {
+    margin: 4px;
+}
