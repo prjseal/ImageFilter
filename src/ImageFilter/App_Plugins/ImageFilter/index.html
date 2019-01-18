@@ -14,7 +14,7 @@
             </div>
             <div class="image__preview">
                 <div ng-if="model.selectedOption !== undefined && !vm.angular.equals(model.selectedOption,{})">
-                    <img src="{{vm.previewMediaUrl}}" />
+                    <a href="{{vm.previewMediaUrl}}" title="Click to download this image" download="{{vm.fileName}}"><img src="{{vm.previewMediaUrl}}" /></a>
                 </div>
                 <div ng-if="model.selectedOption === undefined || vm.angular.equals(model.selectedOption,{})">
                     <p>Please select an option on the right to enable the preview image.</p>

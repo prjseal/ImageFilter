@@ -39,6 +39,7 @@
                 mediaUrl = editorState.current.mediaLink;
                 vm.mediaUrl = mediaUrl;
                 vm.previewMediaUrl = mediaUrl;
+                vm.fileName = editorState.current.mediaLink.replace(/^.*[\\\/]/, '');
             }
 
             vm.selectedProcessorChanged = selectedProcessorChanged;
