@@ -6,7 +6,7 @@
     </div>
     <div id="image-filter" class="image-filter__container">
         <div class="image-filter__header">
-            <div class="image-filter__intro">From here you can experiment with different Image Processor options to see what your image might look like.</div>
+            <div class="image-filter__intro">This content app allows you to apply filters and affects to your image, so you can preview what it looks like and even download the image by clicking on it.</div>
         </div>
         <div class="image-filter__image-store">
             <div class="image__original">
@@ -38,6 +38,8 @@
             <div ng-repeat="option in availableImageProcessorOptions track by $index">
                 <label><input type="radio" name="selectedOption" ng-value="option" ng-model="model.selectedOption" ng-change="vm.selectedProcessorChanged()" no-dirty-check />  {{option.Name}}</label>
             </div>
+            <small>(To experiment with this content app, you need to enable the image processor options in the file /config/imageprocessor/processing.config. The processor options which are currently supported are Brightness, Contrast, Filter, Flip and Rotate.)</small>
+
         </div>
     </div>
 </div>
