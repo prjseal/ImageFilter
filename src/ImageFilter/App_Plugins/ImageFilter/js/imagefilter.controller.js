@@ -16,19 +16,16 @@
 
     function ImageFilter($scope, $http, editorState, navigationService) {
 
-        $scope.rotate = function () {
+        $scope.createNewMedia = function () {
 
             apiUrl = Umbraco.Sys.ServerVariables["PJSealImageFilter"]["ImageFilterApiUrl"];
 
-            //hide the slidey out thing, show some animation
-            $http.post(apiUrl + "RotateMedia", JSON.stringify({ MediaId: parseInt($scope.mediaId), QueryString: $scope.model.queryString, CreateNewMediaItem: true }),
+            $http.post(apiUrl + "CreateNewMedia", JSON.stringify({ MediaId: parseInt($scope.mediaId), QueryString: $scope.model.queryString }),
                 {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 }).then(function (response) {
-                    // console.log(response);
-                    // close the slide out box
                     navigationService.hideDialog();
 
                     // reload the media node
@@ -40,8 +37,6 @@
                     }
 
                 }, function (response) {
-                    //console.log(response);
-                    //notify errors
                     navigationService.hideDialog();
                     //notificationsService.remove(0);
                     //notificationsService.error("Error Editing Image", response.data.Message);

@@ -12,6 +12,8 @@ using System.Web.Http;
 using Umbraco.Core.Models;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
+using Constants = Umbraco.Core.Constants;
+using File = System.IO.File;
 
 namespace ImageFilter.Controllers
 {
@@ -37,7 +39,7 @@ namespace ImageFilter.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult CreateMediaItem(ImageFilterInstruction imageFilterInstruction)
+        public IHttpActionResult CreateNewMedia(ImageFilterInstruction imageFilterInstruction)
         {
             var mediaId = imageFilterInstruction.MediaId;
             var queryString = imageFilterInstruction.QueryString;
@@ -48,22 +50,22 @@ namespace ImageFilter.Controllers
             var mediaItemAlias = mediaItem.ContentType.Alias;
             if (mediaItem == null)
             {
-                return BadRequest(string.Format("Couldn't find the media item to rotate"));
+                return BadRequest(string.Format("Couldn't find the media item to adjust"));
             }
             var umbracoFile = mediaItem.GetValue<string>("umbracoFile");
             if (String.IsNullOrEmpty(umbracoFile))
             {
-                return BadRequest(string.Format("Couldn't retrieve the umbraco file details of the item to rotate"));
+                return BadRequest(string.Format("Couldn't retrieve the umbraco file details of the item to adjust"));
             }
 
             bool isNew = mediaItem.Id <= 0;
             string serverFilePath = GetServerFilePath(mediaItem, isNew);
-            string newFileName = Guid.NewGuid().ToString() + ".jpg";
+            string newFileName = Guid.NewGuid() + Path.GetExtension(serverFilePath);
             if (serverFilePath != null)
             {
                 using (ImageFactory imageFactory = new ImageFactory(false))
                 {
-                    var imageToRotate = imageFactory.Load(serverFilePath);
+                    var imageToAdjust = imageFactory.Load(serverFilePath);
                     var ms = new MemoryStream();
 
                     NameValueCollection settings = HttpUtility.ParseQueryString(imageFilterInstruction.QueryString);
@@ -74,20 +76,20 @@ namespace ImageFilter.Controllers
                     switch (setting)
                     {
                         case "brightness":
-                            imageToRotate.Brightness(int.Parse(value)).Save(ms);
+                            imageToAdjust.Brightness(int.Parse(value)).Save(ms);
                             break;
                         case "contrast":
-                            imageToRotate.Contrast(int.Parse(value)).Save(ms);
+                            imageToAdjust.Contrast(int.Parse(value)).Save(ms);
                             break;
                         case "filter":
                             //TODO
-                            imageToRotate.Save(ms);
+                            imageToAdjust.Save(ms);
                             break;
                         case "flip":
-                            imageToRotate.Flip(flipVertically: value == "vertical", flipBoth: value == "both");
+                            imageToAdjust.Flip(flipVertically: value == "vertical", flipBoth: value == "both");
                             break;
                         case "rotate":
-                            imageToRotate.Rotate(int.Parse(value));
+                            imageToAdjust.Rotate(int.Parse(value));
                             break;
                     }
 
@@ -95,13 +97,13 @@ namespace ImageFilter.Controllers
                     var memoryStreamPostedFile = new MemoryStreamPostedFile(ms, newFileName);
                     string newMediaName = mediaItem.Name + queryString.Replace("?", " ").Replace("=", " ");
                     var newMediaItem = mediaService.CreateMedia(newMediaName, mediaItem.ParentId, mediaItemAlias);
-                    newMediaItem.SetValue("umbracoFile", memoryStreamPostedFile);
+                    newMediaItem.SetValue(Constants.Conventions.Media.File, memoryStreamPostedFile);
                     mediaService.Save(newMediaItem);
                     ms.Dispose();
                     return Ok(newMediaItem.Id);
                 }
             }
-            return BadRequest(string.Format("Couldn't find the media item to rotate"));
+            return BadRequest(string.Format("Couldn't find the media item to adjust"));
         }
 
         /// <summary>
@@ -145,7 +147,6 @@ namespace ImageFilter.Controllers
     {
         public int MediaId { get; set; }
         public string QueryString { get; set; }
-        public bool CreateNewMediaItem { get; set; }
     }
 }
 
