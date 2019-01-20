@@ -7,8 +7,7 @@
     <div id="image-filter" class="image-filter__container">
         <div class="image-filter__header">
             <div class="image-filter__intro">
-                This content app allows you to apply filters and affects to your image, so you can preview what it looks like and even download the image by clicking on it.<br />
-                To experiment with this content app, you need to enable the image processor options in the file /config/imageprocessor/processing.config. The processor options which are currently supported are Brightness, Contrast, Filter, Flip and Rotate.
+                <p>This content app allows you to apply filters and affects to your image, so you can preview what it looks like and even download the image by clicking on it.</p>
             </div>
         </div>
         <div class="image-filter__image-store">
@@ -41,7 +40,11 @@
             <div ng-repeat="option in availableImageProcessorOptions track by $index">
                 <label><input type="radio" name="selectedOption" ng-value="option" ng-model="model.selectedOption" ng-change="vm.selectedProcessorChanged()" no-dirty-check />  {{option.Name}}</label>
             </div>
-            <button type="button" ng-click="createNewMedia()" class="btn umb-button__button btn-success umb-button--">Save as new image</button>
+            <div ng-if="availableImageProcessorOptions.length == 0">
+                <p>To experiment with this content app, you need to enable the image processor options in the file /config/imageprocessor/processing.config.</p>
+                <p>The processor options which are currently supported are Brightness, Contrast, Filter, Flip and Rotate.</p>
+            </div>
+            <button ng-show="model.selectedOption !== undefined && !vm.angular.equals(model.selectedOption,{})" type="button" ng-click="createNewMedia()" class="btn umb-button__button btn-success umb-button--">Save as new image</button>
         </div>
     </div>
 </div>
