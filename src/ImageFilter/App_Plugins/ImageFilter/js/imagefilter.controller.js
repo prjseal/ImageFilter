@@ -14,7 +14,43 @@
         };
     }
 
-    function ImageFilter($scope, $http, editorState) {
+    function ImageFilter($scope, $http, editorState, navigationService) {
+
+        $scope.rotate = function () {
+
+            apiUrl = Umbraco.Sys.ServerVariables["PJSealImageFilter"]["ImageFilterApiUrl"];
+
+            //hide the slidey out thing, show some animation
+            $http.post(apiUrl + "RotateMedia", JSON.stringify({ MediaId: parseInt($scope.mediaId), QueryString: $scope.model.queryString, CreateNewMediaItem: true }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function (response) {
+                    // console.log(response);
+                    // close the slide out box
+                    navigationService.hideDialog();
+
+                    // reload the media node
+                    if (editorState.current.id != response.data) {
+                        $location.path('media/media/edit/' + response.data);
+                    }
+                    else {
+                        window.location.reload(true);
+                    }
+
+                }, function (response) {
+                    //console.log(response);
+                    //notify errors
+                    navigationService.hideDialog();
+                    //notificationsService.remove(0);
+                    //notificationsService.error("Error Editing Image", response.data.Message);
+
+                });
+
+        };
+
+
         var vm = this;
         var apiUrl;
         var mediaUrl;
@@ -23,7 +59,7 @@
             mediaUrl = "";
 
             apiUrl = Umbraco.Sys.ServerVariables["PJSealImageFilter"]["ImageFilterApiUrl"];
-
+            $scope.mediaId = editorState.current.id;
             $scope.availableImageProcessorOptions = [];
 
             $scope.model = {
