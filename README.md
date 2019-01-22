@@ -1,7 +1,7 @@
 # ImageFilter Content App for Umbraco
 
 ## Watch the video
-[![Watch the video on YouTube](https://i9.ytimg.com/vi/LXtYAhZvUXk/mqdefault.jpg?sqp=COyfluIF&rs=AOn4CLDrW9zCLEigkTJO3cg8OOSYmNfhqw&time=1548062742899)](https://www.youtube.com/watch?v=G1dulTWmqlM)
+[![Watch the video on YouTube](/images/image-filter-screenshot.png)](https://www.youtube.com/watch?v=G1dulTWmqlM)
 
 
 ## Login details
