@@ -1,20 +1,38 @@
-﻿using System;
+﻿using ImageFilter.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Umbraco.Core.Components;
-using ImageFilter.Controllers;
+using Umbraco.Core;
+using Umbraco.Core.Composing;
 using Umbraco.Web;
-using Umbraco.Web.UI.JavaScript;
+using Umbraco.Web.JavaScript;
 
 namespace ImageFilter
 {
-    public class ImageFilterComponent : IComposer
+    [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+    public class MyComposer : IUserComposer
     {
         public void Compose(Composition composition)
         {
+            // Append our component to the collection of Components
+            // It will be the last one to be run
+            composition.Components().Append<MyComponent>();
+        }
+    }
+
+    public class MyComponent : IComponent
+    {
+        // initialize: runs once when Umbraco starts
+        public void Initialize()
+        {
             ServerVariablesParser.Parsing += ServerVariablesParser_Parsing;
+        }
+
+        // terminate: runs once when Umbraco stops
+        public void Terminate()
+        {
         }
 
         private void ServerVariablesParser_Parsing(object sender, Dictionary<string, object> e)
@@ -34,13 +52,13 @@ namespace ImageFilter
 
             if (!e.ContainsKey("PJSealImageFilter"))
                 e.Add("PJSealImageFilter", new Dictionary<string, object>
-            {
                 {
-                    "ImageFilterApiUrl",
-                    urlHelper.GetUmbracoApiServiceBaseUrl<ImageFilterBackofficeApiController>(
-                        controller => controller.GetImageProccessorOptions())
-                }
-            });
+                    {
+                        "ImageFilterApiUrl",
+                        urlHelper.GetUmbracoApiServiceBaseUrl<ImageFilterBackofficeApiController>(
+                            controller => controller.GetImageProccessorOptions())
+                    }
+                });
         }
     }
 }
