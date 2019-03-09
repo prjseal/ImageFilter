@@ -255,6 +255,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="App_Plugins\ImageFilter\package.manifest" />
+    <None Include="ImageFilter.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

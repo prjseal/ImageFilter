@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ImageFilter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Image Filter")]
+[assembly: AssemblyDescription("A Content App for Umbraco which lets your editors apply filters to images in the backoffice")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ImageFilter")]
+[assembly: AssemblyCompany("Paul Seal and Nik Rimington")]
+[assembly: AssemblyProduct("Image Filter")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Paul Seal and Nik Rimington")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
