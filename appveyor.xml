@@ -1,6 +1,6 @@
 version: 1.0.{build}
 before_build:
-- ps: nuget restore src/ImageFilter.Web.sln
+  ps: nuget restore src/ImageFilter.Web.sln
 build:
   project: src/ImageFilter/ImageFilter.csproj
   publish_nuget: true
