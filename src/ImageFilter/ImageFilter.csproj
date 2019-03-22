@@ -245,9 +245,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compose\ImageFilterComponent.cs" />
+    <Compile Include="Compose\ImageFilterComposer.cs" />
     <Compile Include="Controllers\ImageFilterBackofficeApiController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="ImageFilterStartup.cs" />
     <Compile Include="Models\AvailableProcessorModel.cs" />
     <Compile Include="Models\MemoryStreamPostedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

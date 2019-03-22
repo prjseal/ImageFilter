@@ -4,25 +4,13 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Umbraco.Core;
 using Umbraco.Core.Composing;
 using Umbraco.Web;
 using Umbraco.Web.JavaScript;
 
-namespace ImageFilter
+namespace ImageFilter.Compose
 {
-    [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
-    public class MyComposer : IUserComposer
-    {
-        public void Compose(Composition composition)
-        {
-            // Append our component to the collection of Components
-            // It will be the last one to be run
-            composition.Components().Append<MyComponent>();
-        }
-    }
-
-    public class MyComponent : IComponent
+    public class ImageFilterComponent : IComponent
     {
         // initialize: runs once when Umbraco starts
         public void Initialize()
