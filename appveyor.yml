@@ -2,6 +2,7 @@ version: 1.0.{build}
 before_build:
   ps: nuget restore src/ImageFilter.Web.sln
 build:
+  image: Visual Studio 2017
   project: src/ImageFilter/ImageFilter.csproj
   publish_nuget: true
   verbosity: detailed
