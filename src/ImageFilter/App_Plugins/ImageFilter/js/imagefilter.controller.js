@@ -16,11 +16,11 @@
 
     function ImageFilter($scope, $http, editorState, navigationService, $location) {
 
-        $scope.createNewMedia = function () {
+        $scope.createNewMedia = function (overwriteExisting) {
 
             apiUrl = Umbraco.Sys.ServerVariables["PJSealImageFilter"]["ImageFilterApiUrl"];
 
-            $http.post(apiUrl + "CreateNewMedia", JSON.stringify({ MediaId: parseInt($scope.mediaId), QueryString: $scope.model.queryString }),
+            $http.post(apiUrl + "CreateNewMedia", JSON.stringify({ MediaId: parseInt($scope.mediaId), QueryString: $scope.model.queryString, OverwriteExisting: overwriteExisting }),
                 {
                     headers: {
                         'Content-Type': 'application/json'
@@ -28,7 +28,6 @@
                 }).then(function (response) {
                     navigationService.hideDialog();
 
-                    // reload the media node
                     if (editorState.current.id != response.data) {
                         $location.path('media/media/edit/' + response.data);
                     }
@@ -38,9 +37,6 @@
 
                 }, function (response) {
                     navigationService.hideDialog();
-                    //notificationsService.remove(0);
-                    //notificationsService.error("Error Editing Image", response.data.Message);
-
                 });
 
         };

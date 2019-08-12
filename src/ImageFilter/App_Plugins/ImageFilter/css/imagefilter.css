@@ -115,3 +115,7 @@
     width: auto;
     max-height: 389px;
 }
+
+#image-filter .image-filter__options button {
+    margin-bottom: 8px;
+}

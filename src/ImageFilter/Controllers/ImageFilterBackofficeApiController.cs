@@ -54,105 +54,142 @@ namespace ImageFilter.Controllers
         [HttpPost]
         public IHttpActionResult CreateNewMedia(ImageFilterInstruction imageFilterInstruction)
         {
-            var mediaId = imageFilterInstruction.MediaId;
-            var queryString = imageFilterInstruction.QueryString;
-            var mediaService = Current.Services.MediaService;
-            var mediaTypeService = Current.Services.MediaTypeService;
-
-            // get mediaItem
-            var mediaItem = mediaService.GetById(mediaId);
-            var mediaItemAlias = mediaItem.ContentType.Alias;
-
-            var umbracoFile = mediaItem.GetValue<string>("umbracoFile");
-            if (String.IsNullOrEmpty(umbracoFile))
+            try
             {
-                return BadRequest(string.Format("Couldn't retrieve the umbraco file details of the item to adjust"));
-            }
+                var mediaId = imageFilterInstruction.MediaId;
+                var queryString = imageFilterInstruction.QueryString;
+                var mediaService = Current.Services.MediaService;
+                var mediaTypeService = Current.Services.MediaTypeService;
+                var mediaItem = mediaService.GetById(mediaId);
+                var mediaItemAlias = mediaItem.ContentType.Alias;
 
-            bool isNew = mediaItem.Id <= 0;
-            string serverFilePath = GetServerFilePath(mediaItem, isNew);
-            if (serverFilePath != null)
-            {
-                FileInfo fileInfo = new FileInfo(serverFilePath);
-                var fileName = fileInfo.Name;
-
-                string mediaPath = "/media/" + _mediaPathScheme.GetFilePath(Current.MediaFileSystem, Guid.NewGuid(),
-                    new Guid("1df9f033-e6d4-451f-b8d2-e0cbc50a836f"), fileName);
-
-                string newFilePath = HttpContext.Current.Server.MapPath(mediaPath);
-
-                using (ImageFactory imageFactory = new ImageFactory(false))
+                var umbracoFile = mediaItem.GetValue<string>("umbracoFile");
+                if (String.IsNullOrEmpty(umbracoFile))
                 {
-                    var imageToAdjust = imageFactory.Load(serverFilePath);
-                    NameValueCollection settings = HttpUtility.ParseQueryString(imageFilterInstruction.QueryString);
+                    return BadRequest(string.Format("Couldn't retrieve the umbraco file details of the item to adjust"));
+                }
 
-                    string setting = settings.GetKey(0);
-                    string value = settings.Get(0);
+                bool isNew = mediaItem.Id <= 0;
+                string serverFilePath = GetServerFilePath(mediaItem, isNew);
+                if (serverFilePath != null)
+                {
+                    FileInfo fileInfo = new FileInfo(serverFilePath);
+                    var fileName = fileInfo.Name;
 
-                    switch (setting)
+                    string mediaPath = "";
+                    string newFilePath = "";
+
+                    if (imageFilterInstruction.OverwriteExisting)
                     {
-                        case "brightness":
-                            imageToAdjust.Brightness(int.Parse(value)).Save(newFilePath);
-                            break;
-                        case "contrast":
-                            imageToAdjust.Contrast(int.Parse(value)).Save(newFilePath);
-                            break;
-                        case "filter":
-                            switch (value)
+                        newFilePath = serverFilePath;
+                    }
+                    else
+                    {
+                        mediaPath = "/media/" 
+                            + _mediaPathScheme.GetFilePath(Current.MediaFileSystem, Guid.NewGuid(),
+                                new Guid("1df9f033-e6d4-451f-b8d2-e0cbc50a836f"), fileName);
+
+                        newFilePath = HttpContext.Current.Server.MapPath(mediaPath);
+                    }
+
+                    using (ImageFactory imageFactory = new ImageFactory(false))
+                    {
+                        var imageToAdjust = imageFactory.Load(serverFilePath);
+                        NameValueCollection settings = HttpUtility.ParseQueryString(imageFilterInstruction.QueryString);
+
+                        var settingCount = settings.Count;
+                        if (settingCount > 0)
+                        {
+                            for (var i = 0; i < settingCount; i++)
                             {
-                                case "gotham":
-                                    imageToAdjust.Filter(MatrixFilters.Gotham).Save(newFilePath);
-                                    break;
-                                case "invert":
-                                    imageToAdjust.Filter(MatrixFilters.Invert).Save(newFilePath);
-                                    break;
-                                case "polaroid":
-                                    imageToAdjust.Filter(MatrixFilters.Polaroid).Save(newFilePath);
-                                    break;
-                                case "blackwhite":
-                                    imageToAdjust.Filter(MatrixFilters.BlackWhite).Save(newFilePath);
-                                    break;
-                                case "greyscale":
-                                    imageToAdjust.Filter(MatrixFilters.GreyScale).Save(newFilePath);
-                                    break;
-                                case "lomograph":
-                                    imageToAdjust.Filter(MatrixFilters.Lomograph).Save(newFilePath);
-                                    break;
-                                case "sepia":
-                                    imageToAdjust.Filter(MatrixFilters.Sepia).Save(newFilePath);
-                                    break;
-                                case "comic":
-                                    imageToAdjust.Filter(MatrixFilters.Comic).Save(newFilePath);
-                                    break;
-                                case "hisatch":
-                                    imageToAdjust.Filter(MatrixFilters.HiSatch).Save(newFilePath);
-                                    break;
-                                case "losatch":
-                                    imageToAdjust.Filter(MatrixFilters.LoSatch).Save(newFilePath);
-                                    break;
-                                default:
-                                    imageToAdjust.Save(newFilePath);
-                                    break;
+                                var setting = settings.GetKey(i);
+                                var value = settings.Get(i);
+
+                                ApplyFilterSetting(imageToAdjust, setting, value);
                             }
+                        }
+
+                        imageToAdjust.Save(newFilePath);
+
+                        if (imageFilterInstruction.OverwriteExisting)
+                        {
+                            return Ok(mediaId);
+                        }
+                        else
+                        {
+                            string newMediaName = mediaItem.Name + queryString.Replace("?", " ")
+                                                                              .Replace("=", " ")
+                                                                              .Replace("&", " ");
+
+                            var newMediaId = CreateMediaItem(mediaService, mediaTypeService, mediaItem.ParentId, mediaItemAlias,
+                                Guid.NewGuid(), newMediaName, mediaPath);
+
+                            return Ok(newMediaId);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(typeof(ImageFilterBackofficeApiController), ex, "There was a problem when trying to create the media item");
+                return BadRequest(string.Format("There was a problem when trying to create the media item"));
+            }
+            return BadRequest(string.Format("Couldn't find the media item to adjust"));
+        }
+
+        private static void ApplyFilterSetting(ImageFactory imageToAdjust, string setting, string value)
+        {
+            switch (setting)
+            {
+                case "brightness":
+                    imageToAdjust.Brightness(int.Parse(value));
+                    break;
+                case "contrast":
+                    imageToAdjust.Contrast(int.Parse(value));
+                    break;
+                case "filter":
+                    switch (value)
+                    {
+                        case "gotham":
+                            imageToAdjust.Filter(MatrixFilters.Gotham);
                             break;
-                        case "flip":
-                            imageToAdjust.Flip(flipVertically: value == "vertical", flipBoth: value == "both").Save(newFilePath);
+                        case "invert":
+                            imageToAdjust.Filter(MatrixFilters.Invert);
                             break;
-                        case "rotate":
-                            imageToAdjust.Rotate(int.Parse(value)).Save(newFilePath);
+                        case "polaroid":
+                            imageToAdjust.Filter(MatrixFilters.Polaroid);
+                            break;
+                        case "blackwhite":
+                            imageToAdjust.Filter(MatrixFilters.BlackWhite);
+                            break;
+                        case "greyscale":
+                            imageToAdjust.Filter(MatrixFilters.GreyScale);
+                            break;
+                        case "lomograph":
+                            imageToAdjust.Filter(MatrixFilters.Lomograph);
+                            break;
+                        case "sepia":
+                            imageToAdjust.Filter(MatrixFilters.Sepia);
+                            break;
+                        case "comic":
+                            imageToAdjust.Filter(MatrixFilters.Comic);
+                            break;
+                        case "hisatch":
+                            imageToAdjust.Filter(MatrixFilters.HiSatch);
+                            break;
+                        case "losatch":
+                            imageToAdjust.Filter(MatrixFilters.LoSatch);
                             break;
                     }
 
-                    string newMediaName = mediaItem.Name + queryString.Replace("?", " ").Replace("=", " ");
-
-
-                    var newMediaId = CreateMediaItem(mediaService, mediaTypeService, mediaItem.ParentId, mediaItemAlias,
-                        Guid.NewGuid(), newMediaName, mediaPath);
-
-                    return Ok(newMediaId);
-                }
+                    break;
+                case "flip":
+                    imageToAdjust.Flip(flipVertically: value == "vertical", flipBoth: value == "both");
+                    break;
+                case "rotate":
+                    imageToAdjust.Rotate(int.Parse(value));
+                    break;
             }
-            return BadRequest(string.Format("Couldn't find the media item to adjust"));
         }
 
         /// <summary>
@@ -265,6 +302,7 @@ namespace ImageFilter.Controllers
     {
         public int MediaId { get; set; }
         public string QueryString { get; set; }
+        public bool OverwriteExisting { get; set; }
     }
 }
 

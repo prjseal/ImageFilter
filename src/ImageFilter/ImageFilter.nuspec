@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>ImageFilter</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <title>ImageFilter</title>
     <authors>Paul Seal, Nik Rimington</authors>
     <owners>Paul Seal</owners>
@@ -12,6 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A content app for Umbraco which lets you use Image Processor to create new images from your media items.</description>
     <releaseNotes>
+      - added ability to overwrite existing image
       - implemented filter setting for save as new image
       - got save as new image working
       - added clean starter kit
