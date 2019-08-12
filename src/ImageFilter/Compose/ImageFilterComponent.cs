@@ -10,7 +10,7 @@ using Umbraco.Web.JavaScript;
 
 namespace ImageFilter.Compose
 {
-    public class ImageFilterComponent : IComponent
+    public class ImageFilterComponent : Umbraco.Core.Composing.IComponent
     {
         // initialize: runs once when Umbraco starts
         public void Initialize()
