@@ -12,7 +12,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
-      - first release
+      - got save as new image working
+      - added clean starter kit
+      - updated to umbraco 8.1.1
     </releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>Umbraco ImageFilter Image Filter Processor v8 package library</tags>
