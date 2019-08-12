@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using ImageProcessor.Imaging.Filters.Photo;
 using Newtonsoft.Json;
 using Umbraco.Core.Composing;
 using Umbraco.Core.IO;
@@ -97,8 +98,42 @@ namespace ImageFilter.Controllers
                             imageToAdjust.Contrast(int.Parse(value)).Save(newFilePath);
                             break;
                         case "filter":
-                            //TODO
-                            imageToAdjust.Save(newFilePath);
+                            switch (value)
+                            {
+                                case "gotham":
+                                    imageToAdjust.Filter(MatrixFilters.Gotham).Save(newFilePath);
+                                    break;
+                                case "invert":
+                                    imageToAdjust.Filter(MatrixFilters.Invert).Save(newFilePath);
+                                    break;
+                                case "polaroid":
+                                    imageToAdjust.Filter(MatrixFilters.Polaroid).Save(newFilePath);
+                                    break;
+                                case "blackwhite":
+                                    imageToAdjust.Filter(MatrixFilters.BlackWhite).Save(newFilePath);
+                                    break;
+                                case "greyscale":
+                                    imageToAdjust.Filter(MatrixFilters.GreyScale).Save(newFilePath);
+                                    break;
+                                case "lomograph":
+                                    imageToAdjust.Filter(MatrixFilters.Lomograph).Save(newFilePath);
+                                    break;
+                                case "sepia":
+                                    imageToAdjust.Filter(MatrixFilters.Sepia).Save(newFilePath);
+                                    break;
+                                case "comic":
+                                    imageToAdjust.Filter(MatrixFilters.Comic).Save(newFilePath);
+                                    break;
+                                case "hisatch":
+                                    imageToAdjust.Filter(MatrixFilters.HiSatch).Save(newFilePath);
+                                    break;
+                                case "losatch":
+                                    imageToAdjust.Filter(MatrixFilters.LoSatch).Save(newFilePath);
+                                    break;
+                                default:
+                                    imageToAdjust.Save(newFilePath);
+                                    break;
+                            }
                             break;
                         case "flip":
                             imageToAdjust.Flip(flipVertically: value == "vertical", flipBoth: value == "both").Save(newFilePath);

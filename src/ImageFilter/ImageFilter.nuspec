@@ -2,16 +2,17 @@
 <package >
   <metadata>
     <id>ImageFilter</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <title>ImageFilter</title>
     <authors>Paul Seal, Nik Rimington</authors>
     <owners>Paul Seal</owners>
-    <licenseUrl>https://github.com/prjseal/ImageFilter/blob/master/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/prjseal/ImageFilter</projectUrl>
-    <iconUrl>https://github.com/prjseal/ImageFilter/blob/master/images/logo.png?raw=true</iconUrl>
+    <iconUrl>https://github.com/prjseal/ImageFilter/blob/master/images/logo.jpg?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A content app for Umbraco which lets you use Image Processor to create new images from your media items.</description>
     <releaseNotes>
+      - implemented filter setting for save as new image
       - got save as new image working
       - added clean starter kit
       - updated to umbraco 8.1.1
