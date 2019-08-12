@@ -23,3 +23,4 @@
 /src/ImageFilter.Web/App_Data/cache
 /src/ImageFilter.Web/App_Data/NuGetBackup/20190307-234728
 /src/*.nupkg
+/src/ImageFilter.Web/*.user

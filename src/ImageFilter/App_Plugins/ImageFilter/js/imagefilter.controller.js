@@ -14,7 +14,7 @@
         };
     }
 
-    function ImageFilter($scope, $http, editorState, navigationService) {
+    function ImageFilter($scope, $http, editorState, navigationService, $location) {
 
         $scope.createNewMedia = function () {
 

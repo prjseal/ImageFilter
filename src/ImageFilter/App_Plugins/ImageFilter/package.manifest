@@ -7,7 +7,7 @@
       "icon": "icon-picture",
       "view": "~/App_Plugins/ImageFilter/index.html",
       "show": [
-        "+media/*"
+        "+media/image"
       ]
     }
   ],

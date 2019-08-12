@@ -9,7 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using Newtonsoft.Json;
+using Umbraco.Core.Composing;
+using Umbraco.Core.IO;
 using Umbraco.Core.Models;
+using Umbraco.Core.PropertyEditors.ValueConverters;
+using Umbraco.Core.Services;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 using Constants = Umbraco.Core.Constants;
@@ -20,6 +25,13 @@ namespace ImageFilter.Controllers
     [PluginController("ImageFilter")]
     public class ImageFilterBackofficeApiController : UmbracoAuthorizedJsonController
     {
+        private IMediaPathScheme _mediaPathScheme;
+
+        public ImageFilterBackofficeApiController(IMediaPathScheme mediaPathScheme)
+        {
+            _mediaPathScheme = mediaPathScheme;
+        }
+
         public List<AvailableProcessorModel> GetImageProccessorOptions()
         {
 
@@ -43,15 +55,13 @@ namespace ImageFilter.Controllers
         {
             var mediaId = imageFilterInstruction.MediaId;
             var queryString = imageFilterInstruction.QueryString;
-            var mediaService = Services.MediaService;
+            var mediaService = Current.Services.MediaService;
+            var mediaTypeService = Current.Services.MediaTypeService;
 
             // get mediaItem
             var mediaItem = mediaService.GetById(mediaId);
             var mediaItemAlias = mediaItem.ContentType.Alias;
-            if (mediaItem == null)
-            {
-                return BadRequest(string.Format("Couldn't find the media item to adjust"));
-            }
+
             var umbracoFile = mediaItem.GetValue<string>("umbracoFile");
             if (String.IsNullOrEmpty(umbracoFile))
             {
@@ -60,14 +70,19 @@ namespace ImageFilter.Controllers
 
             bool isNew = mediaItem.Id <= 0;
             string serverFilePath = GetServerFilePath(mediaItem, isNew);
-            string newFileName = Guid.NewGuid() + Path.GetExtension(serverFilePath);
             if (serverFilePath != null)
             {
+                FileInfo fileInfo = new FileInfo(serverFilePath);
+                var fileName = fileInfo.Name;
+
+                string mediaPath = "/media/" + _mediaPathScheme.GetFilePath(Current.MediaFileSystem, Guid.NewGuid(),
+                    new Guid("1df9f033-e6d4-451f-b8d2-e0cbc50a836f"), fileName);
+
+                string newFilePath = HttpContext.Current.Server.MapPath(mediaPath);
+
                 using (ImageFactory imageFactory = new ImageFactory(false))
                 {
                     var imageToAdjust = imageFactory.Load(serverFilePath);
-                    var ms = new MemoryStream();
-
                     NameValueCollection settings = HttpUtility.ParseQueryString(imageFilterInstruction.QueryString);
 
                     string setting = settings.GetKey(0);
@@ -76,31 +91,30 @@ namespace ImageFilter.Controllers
                     switch (setting)
                     {
                         case "brightness":
-                            imageToAdjust.Brightness(int.Parse(value)).Save(ms);
+                            imageToAdjust.Brightness(int.Parse(value)).Save(newFilePath);
                             break;
                         case "contrast":
-                            imageToAdjust.Contrast(int.Parse(value)).Save(ms);
+                            imageToAdjust.Contrast(int.Parse(value)).Save(newFilePath);
                             break;
                         case "filter":
                             //TODO
-                            imageToAdjust.Save(ms);
+                            imageToAdjust.Save(newFilePath);
                             break;
                         case "flip":
-                            imageToAdjust.Flip(flipVertically: value == "vertical", flipBoth: value == "both");
+                            imageToAdjust.Flip(flipVertically: value == "vertical", flipBoth: value == "both").Save(newFilePath);
                             break;
                         case "rotate":
-                            imageToAdjust.Rotate(int.Parse(value));
+                            imageToAdjust.Rotate(int.Parse(value)).Save(newFilePath);
                             break;
                     }
 
-                    ms.Position = 0;
-                    var memoryStreamPostedFile = new MemoryStreamPostedFile(ms, newFileName);
                     string newMediaName = mediaItem.Name + queryString.Replace("?", " ").Replace("=", " ");
-                    var newMediaItem = mediaService.CreateMedia(newMediaName, mediaItem.ParentId, mediaItemAlias);
-                    newMediaItem.SetValue(Constants.Conventions.Media.File, memoryStreamPostedFile);
-                    mediaService.Save(newMediaItem);
-                    ms.Dispose();
-                    return Ok(newMediaItem.Id);
+
+
+                    var newMediaId = CreateMediaItem(mediaService, mediaTypeService, mediaItem.ParentId, mediaItemAlias,
+                        Guid.NewGuid(), newMediaName, mediaPath);
+
+                    return Ok(newMediaId);
                 }
             }
             return BadRequest(string.Format("Couldn't find the media item to adjust"));
@@ -141,7 +155,76 @@ namespace ImageFilter.Controllers
             filePath = src;
             return filePath;
         }
-               
+
+        private int CreateMediaItem(IMediaService service, IMediaTypeService mediaTypeService,
+            int parentFolderId, string nodeTypeAlias, Guid key, string nodeName, 
+            string mediaPath, bool checkForDuplicateName = false)
+        {
+            //if the item with the exact id exists we cannot install it (the package was probably already installed)
+            if (service.GetById(key) != null)
+                return -1;
+
+            //cannot continue if the media type doesn't exist
+            var mediaType = mediaTypeService.Get(nodeTypeAlias);
+            if (mediaType == null)
+            {
+                Current.Logger.Warn(typeof(ImageFilterBackofficeApiController), "Could not create media, the {NodeTypeAlias} media type is missing, the Clean Starter Kit package will not function correctly", nodeTypeAlias);
+                return -1;
+            }
+
+            var isDuplicate = false;
+
+            if (checkForDuplicateName)
+            {
+                IEnumerable<IMedia> children;
+                if (parentFolderId == -1)
+                {
+                    children = service.GetRootMedia();
+                }
+                else
+                {
+                    var parentFolder = service.GetById(parentFolderId);
+                    if (parentFolder == null)
+                    {
+                        Current.Logger.Warn(typeof(ImageFilterBackofficeApiController), "No media parent found by Id {ParentFolderId} the media item {NodeName} cannot be installed", parentFolderId, nodeName);
+                        return -1;
+                    }
+
+                    children = service.GetPagedChildren(parentFolderId, 0, int.MaxValue, out long totalRecords);
+                }
+                foreach (var m in children)
+                {
+                    if (m.Name == nodeName)
+                    {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isDuplicate) return -1;
+
+            if (parentFolderId != -1)
+            {
+                var parentFolder = service.GetById(parentFolderId);
+                if (parentFolder == null)
+                {
+                    Current.Logger.Warn(typeof(ImageFilterBackofficeApiController), "No media parent found by Id {ParentFolderId} the media item {NodeName} cannot be installed", parentFolderId, nodeName);
+                    return -1;
+                }
+            }
+
+            var media = service.CreateMedia(nodeName, parentFolderId, nodeTypeAlias);
+            if (nodeTypeAlias != "folder")
+                media.SetValue("umbracoFile", JsonConvert.SerializeObject(new ImageCropperValue { Src = mediaPath }));
+            if (key != Guid.Empty)
+            {
+                media.Key = key;
+            }
+            service.Save(media);
+            return media.Id;
+        }
+
     }
     public class ImageFilterInstruction
     {
@@ -150,4 +233,4 @@ namespace ImageFilter.Controllers
     }
 }
 
-    
+
