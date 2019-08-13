@@ -46,6 +46,7 @@
             </div>
             <button ng-show="model.selectedOption !== undefined && !vm.angular.equals(model.selectedOption,{})" type="button" ng-click="createNewMedia(true)" class="btn umb-button__button btn-success umb-button--">Overwrite existing image</button>
             <button ng-show="model.selectedOption !== undefined && !vm.angular.equals(model.selectedOption,{})" type="button" ng-click="createNewMedia(false)" class="btn umb-button__button btn-success umb-button--">Save as new image</button>
+            <button ng-show="model.selectedOption !== undefined && !vm.angular.equals(model.selectedOption,{})" type="button" ng-click="reset()" class="btn umb-button__button btn-danger umb-button--">Reset</button>
         </div>
     </div>
 </div>

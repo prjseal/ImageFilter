@@ -51,11 +51,11 @@ namespace ImageFilter.Models
                     case "contrast":
                         return new List<object> { 0 };
                     case "filter":
-                        return new List<object> { "blackwhite" };
+                        return new List<object> { "none" };
                     case "flip":
-                        return new List<object> { "horizontal" };
+                        return new List<object> { "none" };
                     case "rotate":
-                        return new List<object> { 90 };
+                        return new List<object> { 0 };
                     default:
                         return null;
                 }
