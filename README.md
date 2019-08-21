@@ -1,5 +1,8 @@
 # ImageFilter Content App for Umbraco
 
+![Nuget](https://img.shields.io/nuget/v/ImageFilter)
+[![Nuget Downloads](https://img.shields.io/nuget/dt/ImageFilter.svg)](https://www.nuget.org/packages/ImageFilter)
+
 ## Watch the video
 [![Watch the video on YouTube](/images/image-filter-screenshot.png)](https://www.youtube.com/watch?v=LXtYAhZvUXk)
 
