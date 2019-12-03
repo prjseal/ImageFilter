@@ -82,7 +82,7 @@
                 $scope.availableImageProcessorOptions = response.data;
             });
 
-            if (editorState.current.contentType.alias === "Image") {
+            if (editorState.current.contentTypeAlias === "Image") {
                 mediaUrl = editorState.current.mediaLink;
                 vm.mediaUrl = mediaUrl;
                 vm.previewMediaUrl = mediaUrl;
